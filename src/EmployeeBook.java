@@ -129,10 +129,10 @@ public class EmployeeBook {
             if(belongsTo(employee, department))
                 System.out.println(
                         "Employee{" +
-                                "id=" + employee.getId() +
-                                ", name='" + employee.getName() + '\'' +
-                                ", salary=" + employee.getSalary() +
-                                '}'
+                        "id=" + employee.getId() +
+                        ", name='" + employee.getName() + '\'' +
+                        ", salary=" + employee.getSalary() +
+                        '}'
                 );
     }
 
@@ -201,9 +201,9 @@ public class EmployeeBook {
     public void setSalary(String name, int salary){
         if(length == 0) throw new RuntimeException("EmployeeBook is empty");
 
-        for(Employee employee: this.employees)
-            if(employee != null && employee.getName().equals(name)){
-                employee.setSalary(salary);
+        for(int q = 0; q < 10; q++)
+            if(this.employees[q] != null && this.employees[q].getName().equals(name)){
+                this.employees[q].setSalary(salary);
                 return;
             }
 
@@ -213,9 +213,9 @@ public class EmployeeBook {
     public void setDepartment(String name, String department){
         if(length == 0) throw new RuntimeException("EmployeeBook is empty");
 
-        for(Employee employee: this.employees)
-            if(employee != null && employee.getName().equals(name)){
-                employee.setDepartment(department);
+        for(int q = 0; q < 10; q++)
+            if(this.employees[q] != null && this.employees[q].getName().equals(name)){
+                this.employees[q].setDepartment(department);
                 return;
             }
 
