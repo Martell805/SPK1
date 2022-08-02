@@ -1,66 +1,65 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class EmployeeBook {
-    private final Employee[] employees = {
-            null, null, null, null, null, null, null, null, null, null
-    };
-
-    private int length = 0;
-
+    private final Map<String, Employee> employees = new HashMap<>();
+    
     public void print(){
-        for(Employee employee: this.employees)
-            if(employee != null)
-                System.out.println(employee);
+        for(String fullName: this.employees.keySet())
+            System.out.println(this.employees.get(fullName));
     }
 
     public int sumOfSalaries(){
         int result = 0;
 
-        for(Employee employee: this.employees)
-            if(employee != null)
-                result += employee.getSalary();
+        for(String fullName: this.employees.keySet())
+            result += this.employees.get(fullName).getSalary();
 
         return result;
     }
 
     public int minSalary(){
-        if(this.length == 0) throw new RuntimeException("EmployeeBook is empty");
+        if(this.employees.size() == 0) throw new RuntimeException("EmployeeBook is empty");
 
         int result = -1;
 
-        for(Employee employee: this.employees)
-            if(employee != null)
-                result = (result != -1) ? Math.min(result, employee.getSalary()) : employee.getSalary();
+        for(String fullName: this.employees.keySet())
+            result = (result != -1) ? 
+                    Math.min(result, this.employees.get(fullName).getSalary()) :
+                    this.employees.get(fullName).getSalary();
 
         return result;
     }
 
     public int maxSalary(){
-        if(this.length == 0) throw new RuntimeException("EmployeeBook is empty");
+        if(this.employees.size() == 0) throw new RuntimeException("EmployeeBook is empty");
 
         int result = -1;
 
-        for(Employee employee: this.employees)
-            if(employee != null)
-                result = (result != -1) ? Math.max(result, employee.getSalary()) : employee.getSalary();
+        for(String fullName: this.employees.keySet())
+            result = (result != -1) ? 
+                    Math.max(result, this.employees.get(fullName).getSalary()) :
+                    this.employees.get(fullName).getSalary();
 
         return result;
     }
 
     public int averageSalary(){
-        if(this.length == 0) throw new RuntimeException("EmployeeBook is empty");
+        if(this.employees.size() == 0) throw new RuntimeException("EmployeeBook is empty");
 
-        return sumOfSalaries() / this.length;
+        return sumOfSalaries() / this.employees.size();
     }
 
     public void printNames(){
-        for(Employee employee: this.employees)
-            if(employee != null)
-                System.out.println(employee.getName());
+        for(String fullName: this.employees.keySet())
+            System.out.println(fullName);
     }
 
     public void indexSalary(int percent){
-        for(int q = 0; q < 10; q++)
-            if(this.employees[q] != null)
-                this.employees[q].setSalary((int)(this.employees[q].getSalary() * (1 + percent / 100.0)));
+        for(String fullName: this.employees.keySet())
+            this.employees.get(fullName).setSalary(
+                    (int)(this.employees.get(fullName).getSalary() * (1 + percent / 100.0))
+            );
     }
 
     private boolean belongsTo(Employee employee, String department){
@@ -70,46 +69,50 @@ public class EmployeeBook {
     public int sumOfSalaries(String department){
         int result = 0;
 
-        for(Employee employee: this.employees)
-            if(belongsTo(employee, department))
-                result += employee.getSalary();
+        for(String fullName: this.employees.keySet())
+            if(belongsTo(this.employees.get(fullName), department))
+                result += this.employees.get(fullName).getSalary();
 
         return result;
     }
 
     public int minSalary(String department){
-        if(this.length == 0) throw new RuntimeException("EmployeeBook is empty");
+        if(this.employees.size() == 0) throw new RuntimeException("EmployeeBook is empty");
 
         int result = -1;
 
-        for(Employee employee: this.employees)
-            if(belongsTo(employee, department))
-                result = (result != -1) ? Math.min(result, employee.getSalary()) : employee.getSalary();
+        for(String fullName: this.employees.keySet())
+            if(belongsTo(this.employees.get(fullName), department))
+                result = (result != -1) ? 
+                        Math.min(result, this.employees.get(fullName).getSalary()) : 
+                        this.employees.get(fullName).getSalary();
 
         return result;
     }
 
     public int maxSalary(String department){
-        if(this.length == 0) throw new RuntimeException("EmployeeBook is empty");
+        if(this.employees.size() == 0) throw new RuntimeException("EmployeeBook is empty");
 
         int result = -1;
 
-        for(Employee employee: this.employees)
-            if(belongsTo(employee, department))
-                result = (result != -1) ? Math.max(result, employee.getSalary()) : employee.getSalary();
+        for(String fullName: this.employees.keySet())
+            if(belongsTo(this.employees.get(fullName), department))
+                result = (result != -1) ? 
+                        Math.max(result, this.employees.get(fullName).getSalary()) : 
+                        this.employees.get(fullName).getSalary();
 
         return result;
     }
 
     public int averageSalary(String department){
-        if(this.length == 0) throw new RuntimeException("EmployeeBook is empty");
+        if(this.employees.size() == 0) throw new RuntimeException("EmployeeBook is empty");
 
         int sum = 0;
         int quantity = 0;
 
-        for(Employee employee: this.employees)
-            if(belongsTo(employee, department)){
-                sum += employee.getSalary();
+        for(String fullName: this.employees.keySet())
+            if(belongsTo(this.employees.get(fullName), department)){
+                sum += this.employees.get(fullName).getSalary();
                 quantity++;
             }
 
@@ -119,107 +122,86 @@ public class EmployeeBook {
     }
 
     public void indexSalary(int percent, String department){
-        for(int q = 0; q < 10; q++)
-            if(belongsTo(this.employees[q], department))
-                this.employees[q].setSalary((int)(this.employees[q].getSalary() * (1 + percent / 100.0)));
-    }
-
-    public void print(String department){
-        for(Employee employee: this.employees)
-            if(belongsTo(employee, department))
-                System.out.println(
-                        "Employee{" +
-                        "id=" + employee.getId() +
-                        ", name='" + employee.getName() + '\'' +
-                        ", salary=" + employee.getSalary() +
-                        '}'
+        for(String fullName: this.employees.keySet())
+            if(belongsTo(this.employees.get(fullName), department))
+                this.employees.get(fullName).setSalary(
+                        (int)(this.employees.get(fullName).getSalary() * (1 + percent / 100.0))
                 );
     }
 
+    public void print(String department){
+        for(String fullName: this.employees.keySet())
+            if(belongsTo(this.employees.get(fullName), department))
+                System.out.println(this.employees.get(fullName));
+    }
+
     public void printEmployeesWithLessSalary(int salary){
-        for(Employee employee: this.employees)
-            if(employee != null && employee.getSalary() < salary)
-                System.out.println(employee);
+        for(String fullName: this.employees.keySet())
+            if(this.employees.get(fullName) != null && this.employees.get(fullName).getSalary() < salary)
+                System.out.println(this.employees.get(fullName));
     }
 
     public void printEmployeesWithHighersSalary(int salary){
-        for(Employee employee: this.employees)
-            if(employee != null && employee.getSalary() >= salary)
-                System.out.println(employee);
+        for(String fullName: this.employees.keySet())
+            if(this.employees.get(fullName) != null && this.employees.get(fullName).getSalary() >= salary)
+                System.out.println(this.employees.get(fullName));
     }
 
     public void addEmployee(Employee new_employee){
-        if(length == 10) throw new RuntimeException("EmployeeBook is already full");
+        if(this.employees.size() == 10) throw new RuntimeException("EmployeeBook is already full");
 
-        for(int q = 0; q < 10; q++)
-            if(this.employees[q] == null){
-                this.employees[q] = new_employee;
-                length++;
-                return;
-            }
+        employees.put(new_employee.getName(), new_employee);
     }
 
     public void deleteEmployee(int id){
-        if(length == 0) throw new RuntimeException("EmployeeBook is empty");
+        if(this.employees.size() == 0) throw new RuntimeException("EmployeeBook is empty");
 
-        for(int q = 0; q < 10; q++)
-            if(this.employees[q] != null && this.employees[q].getId() == id){
-                this.employees[q] = null;
-                length--;
+        for(String fullName: this.employees.keySet())
+            if(this.employees.get(fullName).getId() == id){
+                this.employees.remove(fullName);
                 return;
             }
 
-        throw new RuntimeException("Employee didnt found");
+        throw new RuntimeException("Employee not found");
     }
 
     public void deleteEmployee(String name){
-        if(length == 0) throw new RuntimeException("EmployeeBook is empty");
+        if(this.employees.size() == 0) throw new RuntimeException("EmployeeBook is empty");
 
-        for(int q = 0; q < 10; q++)
-            if(this.employees[q] != null && this.employees[q].getName().equals(name)){
-                this.employees[q] = null;
-                length--;
-                return;
-            }
+        if(!this.employees.containsKey(name))
+            throw new RuntimeException("Employee not found");
 
-        throw new RuntimeException("Employee didnt found");
+        this.employees.remove(name);
     }
 
     public void deleteEmployee(int id, String name){
-        if(length == 0) throw new RuntimeException("EmployeeBook is empty");
+        if(this.employees.size() == 0) throw new RuntimeException("EmployeeBook is empty");
 
-        for(int q = 0; q < 10; q++)
-            if(this.employees[q] != null && this.employees[q].getId() == id && this.employees[q].getName().equals(name)){
-                this.employees[q] = null;
-                length--;
-                return;
-            }
+        if(!this.employees.containsKey(name))
+            throw new RuntimeException("Employee not found");
 
-        throw new RuntimeException("Employee didnt found");
+        if(this.employees.get(name).getId() != id)
+            throw new RuntimeException("Employee not found");
+
+        this.employees.remove(name);
     }
 
     public void setSalary(String name, int salary){
-        if(length == 0) throw new RuntimeException("EmployeeBook is empty");
+        if(this.employees.size() == 0) throw new RuntimeException("EmployeeBook is empty");
 
-        for(int q = 0; q < 10; q++)
-            if(this.employees[q] != null && this.employees[q].getName().equals(name)){
-                this.employees[q].setSalary(salary);
-                return;
-            }
+        if(!this.employees.containsKey(name))
+            throw new RuntimeException("Employee not found");
 
-        throw new RuntimeException("Employee didnt found");
+        this.employees.get(name).setSalary(salary);
     }
 
     public void setDepartment(String name, String department){
-        if(length == 0) throw new RuntimeException("EmployeeBook is empty");
+        if(this.employees.size() == 0) throw new RuntimeException("EmployeeBook is empty");
 
-        for(int q = 0; q < 10; q++)
-            if(this.employees[q] != null && this.employees[q].getName().equals(name)){
-                this.employees[q].setDepartment(department);
-                return;
-            }
+        if(!this.employees.containsKey(name))
+            throw new RuntimeException("Employee not found");
 
-        throw new RuntimeException("Employee didnt found");
+        this.employees.get(name).setDepartment(department);
     }
 
     public void printDepartments(){
